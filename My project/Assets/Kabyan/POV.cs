@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class POV : MonoBehaviour
 {
-    
-    public float radius;
+public float radius;
     [Range(0,360)]
     public float angle;
 
@@ -58,5 +57,4 @@ public class POV : MonoBehaviour
         else if (canSeePlayer)
             canSeePlayer = false;
     }
-
 }

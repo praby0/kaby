@@ -4,7 +4,7 @@ using UnityEngine;
 [CustomEditor(typeof(POV))]
 public class PovEditor : Editor
 {
-private void OnSceneGUI()
+    private void OnSceneGUI()
     {
         POV fov = (POV)target;
         Handles.color = Color.white;
@@ -30,5 +30,4 @@ private void OnSceneGUI()
 
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
-
 }

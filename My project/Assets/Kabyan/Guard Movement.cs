@@ -35,13 +35,12 @@ public class GuardMovements : MonoBehaviour
     {
         fin_location = Random_Number();
         transform.position = Vector3.MoveTowards(transform.position, Random_Number(), speed * Time.deltaTime); //move towards the random value with (speed) velocity
-        yield return new WaitForSeconds(.2f); 
+        yield return new WaitForSeconds(2f); 
 
     }
     //run towards player
     private void Chase()
     {
-
         transform.position = Vector3.MoveTowards(transform.position, player_info.playerRef.transform.position, speed * Time.deltaTime);
     }
     //gets random vector value to move towards

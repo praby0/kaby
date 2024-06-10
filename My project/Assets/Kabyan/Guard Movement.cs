@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class GuardMovement : MonoBehaviour
+public class GuardMovements : MonoBehaviour
 {
     public POV player_info;
     public float min_X;
@@ -14,12 +14,15 @@ public class GuardMovement : MonoBehaviour
     public float max_Z;
     public float y_Value;
     public float speed;
+    public Vector3 fin_location;
 
     private void Update()
     {
         if(player_info.canSeePlayer)
         {
             Chase(); //chase player if spotted
+            StartCoroutine(Chill());
+
         }
         else if(!player_info.canSeePlayer)
         {
@@ -30,15 +33,15 @@ public class GuardMovement : MonoBehaviour
     //movement when player not spotted
     private IEnumerator Patrol()
     {
-        WaitForSeconds wait = new WaitForSeconds(2f);
+        fin_location = Random_Number();
         transform.position = Vector3.MoveTowards(transform.position, Random_Number(), speed * Time.deltaTime); //move towards the random value with (speed) velocity
-        yield return wait; //this allows the guard to travel a bit until new location is determined
+        yield return new WaitForSeconds(.2f); 
 
     }
     //run towards player
     private void Chase()
     {
-        StartCoroutine(Chill());
+
         transform.position = Vector3.MoveTowards(transform.position, player_info.playerRef.transform.position, speed * Time.deltaTime);
     }
     //gets random vector value to move towards
@@ -53,7 +56,7 @@ public class GuardMovement : MonoBehaviour
     //just waits for whatever value of wait it is(in case code runs slow)
     private IEnumerator Chill()
     {
-        WaitForSeconds wait = new WaitForSeconds(.2f);
+        WaitForSeconds wait = new WaitForSeconds(2f);
         yield return wait;
     }
 

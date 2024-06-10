@@ -17,11 +17,11 @@ public class GuardMovement : MonoBehaviour
 
     private void Update()
     {
-        while(player_info.canSeePlayer)
+        if(player_info.canSeePlayer)
         {
             Chase(); //chase player if spotted
         }
-        while(!player_info.canSeePlayer)
+        else if(!player_info.canSeePlayer)
         {
             StartCoroutine(Patrol()); //let him be if not
         }
@@ -31,12 +31,9 @@ public class GuardMovement : MonoBehaviour
     private IEnumerator Patrol()
     {
         WaitForSeconds wait = new WaitForSeconds(2f);
-
-        while(true)
-        {
         transform.position = Vector3.MoveTowards(transform.position, Random_Number(), speed * Time.deltaTime); //move towards the random value with (speed) velocity
         yield return wait; //this allows the guard to travel a bit until new location is determined
-        }
+
     }
     //run towards player
     private void Chase()

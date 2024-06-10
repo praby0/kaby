@@ -36,7 +36,7 @@ public class FlashLightState : MonoBehaviour
         }
         else // if it is lower than the maxTime will be decreased to 2 seconds and current battery will still go -1 but it will happen faster.
         {
-            maxTimeTillBatteryDecrease = 2.0f;
+            maxTimeTillBatteryDecrease = 2.0f; //changes the maxTime to 2 seconds.
             currentBattery--;
         }
     }

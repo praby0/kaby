@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class GuardMovements : MonoBehaviour
 {
@@ -34,8 +31,8 @@ public class GuardMovements : MonoBehaviour
     private IEnumerator Patrol()
     {
         fin_location = Random_Number();
-        transform.position = Vector3.MoveTowards(transform.position, Random_Number(), speed * Time.deltaTime); //move towards the random value with (speed) velocity
-        yield return new WaitForSeconds(2f); 
+        transform.position = Vector3.MoveTowards(transform.position, fin_location, speed * Time.deltaTime); //move towards the random value with (speed) velocity
+        yield return new WaitForSeconds(20f); 
 
     }
     //run towards player
@@ -55,8 +52,7 @@ public class GuardMovements : MonoBehaviour
     //just waits for whatever value of wait it is(in case code runs slow)
     private IEnumerator Chill()
     {
-        WaitForSeconds wait = new WaitForSeconds(2f);
-        yield return wait;
+        yield return new WaitForSeconds(2f);
     }
 
 

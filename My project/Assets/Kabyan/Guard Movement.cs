@@ -13,27 +13,27 @@ public class GuardMovements : MonoBehaviour
     public float speed;
     public Vector3 fin_location;
 
-    private void Start()
+    private void Update()
     {
-        while(true)
-        {   
-            if(player_info.canSeePlayer)
-            {
-                StartCoroutine(Chill());
-
-            }
-            else if(!player_info.canSeePlayer)
-            {
-                StartCoroutine(Patrol()); //let him be if not
-            }
+        StartCoroutine(Chill());
+        if(!player_info.canSeePlayer)
+        {
+            StartCoroutine(Patrol()); //let him be if not
         }
+        else if(player_info.canSeePlayer)
+        {
+            Chase();
+            
+        }
+
     }
 
     //movement when player not spotted
-    private void Patrol()
+    private IEnumerator Patrol()
     {
         fin_location = Random_Number();
         transform.position = Vector3.MoveTowards(transform.position, fin_location, speed * Time.deltaTime); //move towards the random value with (speed) velocity
+        yield return new WaitForSecondsRealtime(2f);
 
     }
     //run towards player
@@ -53,8 +53,7 @@ public class GuardMovements : MonoBehaviour
     //just waits for whatever value of wait it is(in case code runs slow)
     private IEnumerator Chill()
     {
-        yield return new WaitForSeconds(2f);
-        Patrol();
+        yield return new WaitForSeconds(20f);
     }
 
 

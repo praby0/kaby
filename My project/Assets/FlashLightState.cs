@@ -9,6 +9,7 @@ public class FlashLightState : MonoBehaviour
     public float currentBattery;
     public float timeTillBatteryDecrease = 0.0f;
     public float maxTimeTillBatteryDecrease = 5.0f;
+    float decreaseperTick = 0.00001f;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,7 @@ public class FlashLightState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentBattery -= decreaseperTick;
         if(flash_on_off.flashOnOff == true) //flashlight is on
         {
             timeTillBatteryDecrease += Time.deltaTime; //if it is this will tick until its max capacity of time is reached

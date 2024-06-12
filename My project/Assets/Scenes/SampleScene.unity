@@ -725,10 +725,10 @@ RectTransform:
   - {fileID: 935074584}
   m_Father: {fileID: 1147884873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -306.6029, y: -186.94598}
-  m_SizeDelta: {x: 194.99998, y: 33.75}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -740.6029, y: 23.054016}
+  m_SizeDelta: {x: 195, y: 33.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &610004252
 MonoBehaviour:
@@ -1079,7 +1079,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 55
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1095,6 +1095,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adbe04a3ad1b748d787e9ba4e594bd6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baterie: {fileID: 1440005259}
+  slide: {fileID: 935074585}
 --- !u!1 &1147884872
 GameObject:
   m_ObjectHideFlags: 0

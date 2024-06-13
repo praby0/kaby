@@ -17,6 +17,7 @@ public class FlashLightStateManager : MonoBehaviour
     public Light lightForFlash;
     public float percentOfBatteryToBeDecreased = 1.0f; 
     public float percentDecreasedPerTick = 0.0001f;
+    public PickUpItems pickUp;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +30,7 @@ public class FlashLightStateManager : MonoBehaviour
     void Update()
     {
         currentBattery -= percentDecreasedPerTick;
-        if(Input.GetKeyDown(KeyCode.F) && disableLight == false)
+        if(Input.GetKeyDown(KeyCode.F) && disableLight == false && pickUp.equipped == true)
         {
             lightToShow.enabled = !lightToShow.enabled;
             lightForFlash.enabled = !lightForFlash.enabled;

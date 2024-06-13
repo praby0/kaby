@@ -7,50 +7,143 @@ using UnityEngine.UIElements;
 
 public class PickUpItems : MonoBehaviour
 {
-    public bool equipped;
-    public static bool slotFull;
-
-    public GameObject[] goi;
-    public Vector3 diffFromPlayerToObject;
+    public GameObject player;
+    public Transform holdPos;
+    //if you copy from below this point, you are legally required to like the video
+    public float throwForce = 500f; //force at which the object is thrown at
+    public float pickUpRange = 5f; //how far the player can pickup the object from
+    private float rotationSensitivity = 1f; //how fast/slow the object is rotated in relation to mouse movement
+    private GameObject heldObj; //object which we pick up
+    public bool equipped = false;
+    private Rigidbody heldObjRb; //rigidbody of object we pick up
+    private bool canDrop = true; //this is needed so we don't throw/drop object when rotating the object
+    private int LayerNumber; //layer index
+    //Reference to script which includes mouse movement of player (looking around)
+    //we want to disable the player looking around when rotating the object
+    //example below 
+    //MouseLookScript mouseLookScript;
     void Start()
     {
-        goi = GameObject.FindGameObjectsWithTag("items");
-        
-    }
+        LayerNumber = LayerMask.NameToLayer("holdLayer"); //if your holdLayer is named differently make sure to change this ""
 
-    // Update is called once per frame
-    private void Update()
+        //mouseLookScript = player.GetComponent<MouseLookScript>();
+    }
+    void Update()
     {
-        foreach (GameObject g in goi)
+        if (Input.GetKeyDown(KeyCode.E)) //change E to whichever key you want to press to pick up
         {
-            if(g != null)
+            if (heldObj == null) //if currently not holding anything
             {
-                diffFromPlayerToObject = g.transform.position - transform.position;
-                float currdiff = diffFromPlayerToObject.sqrMagnitude;
-                if(!equipped && currdiff < 2 && Input.GetKeyDown(KeyCode.E) && !slotFull)
+                //perform raycast to check if player is looking at object within pickuprange
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, pickUpRange))
                 {
-                    pickUp(g);
-                    print("pick-up");
+                    //make sure pickup tag is attached
+                    if (hit.transform.gameObject.tag == "items")
+                    {
+                        //pass in object hit into the PickUpObject function
+                        PickUpObject(hit.transform.gameObject);
+                        equipped = true;
+                    }
                 }
-                if(equipped && Input.GetKeyDown(KeyCode.Q))
+            }
+            else
+            {
+                if(canDrop == true)
                 {
-                    drop(g);
-                    print("drop");
+                    StopClipping(); //prevents object from clipping through walls *This shi dont work for some reason*
+                    DropObject();
                 }
             }
         }
-    }
+        if (heldObj != null) //if player is holding object
+        {
+            MoveObject(); //keep object position at holdPos
+            RotateObject();
+            if (Input.GetKeyDown(KeyCode.Q) && canDrop == true) //q is used to throw, change this if you want another button to be used)
+            {
+                StopClipping();
+                ThrowObject();
+            }
 
-    private void pickUp(GameObject a)
+        }
+    }
+    void PickUpObject(GameObject pickUpObj)
     {
-        equipped = true;
-        slotFull = true;
-
+        if (pickUpObj.GetComponent<Rigidbody>()) //make sure the object has a RigidBody
+        {
+            heldObj = pickUpObj; //assign heldObj to the object that was hit by the raycast (no longer == null)
+            heldObjRb = pickUpObj.GetComponent<Rigidbody>(); //assign Rigidbody
+            heldObjRb.isKinematic = true;
+            heldObjRb.transform.parent = holdPos.transform; //parent object to holdposition
+            heldObj.layer = LayerNumber; //change the object layer to the holdLayer
+            //make sure object doesnt collide with player, it can cause weird bugs
+            Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
+        }
     }
-    private void drop(GameObject a)
+    void DropObject()
     {
-        equipped = false;
-        slotFull = false;
+        //re-enable collision with player
+        Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
+        heldObj.layer = 0; //object assigned back to default layer
+        heldObjRb.isKinematic = false;
+        heldObj.transform.parent = null; //unparent object
+        heldObj = null; //undefine game object
+    }
+    void MoveObject()
+    {
+        heldObj.transform.position = holdPos.transform.position;
 
     }
+    void RotateObject()
+    {
+        if (Input.GetKey(KeyCode.R))//hold R key to rotate, change this to whatever key you want
+        {
+            canDrop = false; //make sure throwing can't occur during rotating
+
+            //disable player being able to look around
+            //mouseLookScript.verticalSensitivity = 0f;
+            //mouseLookScript.lateralSensitivity = 0f;
+
+            float XaxisRotation = Input.GetAxis("Mouse X") * rotationSensitivity;
+            float YaxisRotation = Input.GetAxis("Mouse Y") * rotationSensitivity;
+            //rotate the object depending on mouse X-Y Axis
+            heldObj.transform.Rotate(Vector3.down, XaxisRotation);
+            heldObj.transform.Rotate(Vector3.right, YaxisRotation);
+        }
+        else
+        {
+            //re-enable player being able to look around
+            //mouseLookScript.verticalSensitivity = originalvalue;
+            //mouseLookScript.lateralSensitivity = originalvalue;
+            canDrop = true;
+        }
+    }
+    void ThrowObject()
+    {
+        //same as drop function, but add force to object before undefining it
+        Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
+        heldObj.layer = 0;
+        heldObjRb.isKinematic = false;
+        heldObj.transform.parent = null;
+        heldObjRb.AddForce(transform.forward * throwForce);
+        heldObj = null;
+    }
+    void StopClipping() //function only called when dropping/throwing
+    {
+        var clipRange = Vector3.Distance(heldObj.transform.position, transform.position); //distance from holdPos to the camera
+        //have to use RaycastAll as object blocks raycast in center screen
+        //RaycastAll returns array of all colliders hit within the cliprange
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(transform.position, transform.TransformDirection(Vector3.forward), clipRange);
+        //if the array length is greater than 1, meaning it has hit more than just the object we are carrying
+        if (hits.Length > 1)
+        {
+            //change object position to camera position 
+            heldObj.transform.position = transform.position + new Vector3(0f, -0.1f, 0f); //offset slightly downward to stop object dropping above player 
+            //if your player is small, change the -0.5f to a smaller number (in magnitude) ie: -0.1f
+        }
+    }
+
+
 }

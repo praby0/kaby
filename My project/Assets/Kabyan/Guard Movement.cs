@@ -21,13 +21,12 @@ public class GuardMovements : MonoBehaviour
     {
         if(!player_info.canSeePlayer)
         {
-            StartCoroutine(Patrol()); //let him be if not
+            Patrol(); //let him be if not
             If_Reached();
         }
         else if(player_info.canSeePlayer)
         {
             Chase();
-            If_Reached();
         }
         while(loc_reached)
         {
@@ -37,10 +36,9 @@ public class GuardMovements : MonoBehaviour
     }
 
     //movement when player not spotted
-    private IEnumerator Patrol()
+    private void Patrol()
     {
         transform.position = Vector3.MoveTowards(transform.position, fin_location, speed * Time.deltaTime); //move towards the random value with (speed) velocity
-        yield return new WaitForSecondsRealtime(2f);
         transform.LookAt(fin_location);
 
     }

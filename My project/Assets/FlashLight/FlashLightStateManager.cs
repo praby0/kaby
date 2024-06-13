@@ -29,6 +29,7 @@ public class FlashLightStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentBattery -= percentDecreasedPerTick;
         if(Input.GetKeyDown(KeyCode.F) && disableLight == false && pickUp.equipped == true)
         {
             lightToShow.enabled = !lightToShow.enabled;
@@ -40,7 +41,6 @@ public class FlashLightStateManager : MonoBehaviour
         }
         if(lightToShow.enabled == true && disableLight == false)
         {
-            currentBattery -= percentDecreasedPerTick;
             startAmountToMax += Time.deltaTime;
             if(startAmountToMax > maxAmoutToBeReached)
             {

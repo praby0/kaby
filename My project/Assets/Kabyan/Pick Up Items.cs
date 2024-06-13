@@ -84,7 +84,6 @@ public class PickUpItems : MonoBehaviour
     void DropObject()
     {
         //re-enable collision with player
-        equipped = false;
         Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
         heldObj.layer = 0; //object assigned back to default layer
         heldObjRb.isKinematic = false;
@@ -94,7 +93,6 @@ public class PickUpItems : MonoBehaviour
     void MoveObject()
     {
         heldObj.transform.position = holdPos.transform.position;
-        heldObj.transform.rotation = holdPos.rotation;
 
     }
     void RotateObject()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GuardMovements : MonoBehaviour
@@ -40,12 +41,14 @@ public class GuardMovements : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, fin_location, speed * Time.deltaTime); //move towards the random value with (speed) velocity
         yield return new WaitForSecondsRealtime(2f);
+        transform.LookAt(fin_location);
 
     }
     //run towards player
     private void Chase()
     {
         transform.position = Vector3.MoveTowards(transform.position, player_info.playerRef.transform.position, speed * Time.deltaTime);
+        transform.LookAt(player_info.playerRef.transform);
     }
     //gets random vector value to move towards
     private void Random_Number()

@@ -16,7 +16,7 @@ public class FlashLightStateManager : MonoBehaviour
     public Light lightToShow;
     public Light lightForFlash;
     public float percentOfBatteryToBeDecreased = 1.0f; 
-    public float percentDecreasedPerTick = 0.0001f;
+    public float percentDecreasedPerTick = 0.00001f;
     public PickUpItems pickUp;
     // Start is called before the first frame update
     void Start()

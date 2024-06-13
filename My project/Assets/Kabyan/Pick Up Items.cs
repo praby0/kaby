@@ -92,6 +92,7 @@ public class PickUpItems : MonoBehaviour
     void MoveObject()
     {
         heldObj.transform.position = holdPos.transform.position;
+        heldObj.transform.rotation = holdPos.rotation;
 
     }
     void ThrowObject()

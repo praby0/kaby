@@ -12,7 +12,6 @@ public class PickUpItems : MonoBehaviour
     //if you copy from below this point, you are legally required to like the video
     public float throwForce = 300f; //force at which the object is thrown at
     public float pickUpRange = 5f; //how far the player can pickup the object from
-    private float rotationSensitivity = 1f; //how fast/slow the object is rotated in relation to mouse movement
     private GameObject heldObj; //object which we pick up
     public bool equipped = false;
     private Rigidbody heldObjRb; //rigidbody of object we pick up
@@ -59,7 +58,6 @@ public class PickUpItems : MonoBehaviour
         if (heldObj != null) //if player is holding object
         {
             MoveObject(); //keep object position at holdPos
-            RotateObject();
             if (Input.GetKeyDown(KeyCode.Q) && canDrop == true) //q is used to throw, change this if you want another button to be used)
             {
                 StopClipping();
@@ -98,30 +96,6 @@ public class PickUpItems : MonoBehaviour
         heldObj.transform.rotation = holdPos.rotation;
 
     }
-    void RotateObject()
-    {
-        if (Input.GetKey(KeyCode.R))//hold R key to rotate, change this to whatever key you want
-        {
-            canDrop = false; //make sure throwing can't occur during rotating
-
-            //disable player being able to look around
-            //mouseLookScript.verticalSensitivity = 0f;
-            //mouseLookScript.lateralSensitivity = 0f;
-
-            float XaxisRotation = Input.GetAxis("Mouse X") * rotationSensitivity;
-            float YaxisRotation = Input.GetAxis("Mouse Y") * rotationSensitivity;
-            //rotate the object depending on mouse X-Y Axis
-            heldObj.transform.Rotate(Vector3.down, XaxisRotation);
-            heldObj.transform.Rotate(Vector3.right, YaxisRotation);
-        }
-        else
-        {
-            //re-enable player being able to look around
-            //mouseLookScript.verticalSensitivity = originalvalue;
-            //mouseLookScript.lateralSensitivity = originalvalue;
-            canDrop = true;
-        }
-    }
     void ThrowObject()
     {
         //same as drop function, but add force to object before undefining it
@@ -130,6 +104,7 @@ public class PickUpItems : MonoBehaviour
         heldObjRb.isKinematic = false;
         heldObj.transform.parent = null;
         heldObjRb.AddForce(transform.forward * throwForce);
+        heldObjRb.AddForce(transform.forward , ForceMode.Acceleration);
         heldObj = null;
     }
     void StopClipping() //function only called when dropping/throwing

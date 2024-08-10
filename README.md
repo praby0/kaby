@@ -1,3 +1,3 @@
-UnityGame
+Amazing Unity Game
 
-A game to be made.
+An amazing game to be made.

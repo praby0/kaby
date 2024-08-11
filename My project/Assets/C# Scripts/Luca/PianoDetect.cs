@@ -1,41 +1,31 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PianoDetect : MonoBehaviour
 {
-    public float radius;
-    [Range(0,360)]
-    public float angle;
-
     public GameObject player;
 
     public LayerMask targetMask;
 
     public LayerMask obstructionMask;
-
+    public float radius;
+    [Range(0,360)]
+   
+    public float angle;
+   
     public bool aggro;
 
-    
-    // Start is called before the first frame update
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
             Debug.Log("Script activated");
         StartCoroutine(visibilityChecks());
     }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        
-    }
-
     private IEnumerator visibilityChecks()
     {
         while(true)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
             playerVisibility();
         }
     }
@@ -51,10 +41,25 @@ public class PianoDetect : MonoBehaviour
 
             if(Vector3.Angle(transform.forward, targetDirection) < angle / 2)
             {
-                
-            }
+                float targetDistance = Vector3.Distance(transform.position, target.position);
 
+                if(Physics.Raycast(transform.position, targetDirection, targetDistance, obstructionMask))
+                {
+                    aggro = false;
+                }
+                else
+                {
+                    aggro = true;
+                }
+            }
+            else
+            {
+                aggro = false;
+            }
+        }
+        else if(aggro)
+        {
+            aggro = false;
         }
     }
-
 }

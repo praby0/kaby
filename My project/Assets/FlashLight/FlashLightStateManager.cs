@@ -30,7 +30,7 @@ public class FlashLightStateManager : MonoBehaviour
     void Update()
     {
         currentBattery -= percentDecreasedPerTick;
-        if(Input.GetKeyDown(KeyCode.F) && disableLight == false && pickUp.equipped == true)
+        if(Input.GetKeyDown(KeyCode.F) && disableLight == false && pickUp.equipped == true && pickUp.equipped == true)
         {
             lightToShow.enabled = !lightToShow.enabled;
             lightForFlash.enabled = !lightForFlash.enabled;

@@ -43,6 +43,7 @@ public class PickUpItems : MonoBehaviour
                         //pass in object hit into the PickUpObject function
                         PickUpObject(hit.transform.gameObject);
                         equipped = true;
+                        print(equipped);
                     }
                 }
             }
@@ -52,6 +53,7 @@ public class PickUpItems : MonoBehaviour
                 {
                     StopClipping(); //prevents object from clipping through walls *This shi dont work for some reason*
                     DropObject();
+                    equipped = false;
                 }
             }
         }

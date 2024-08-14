@@ -818,6 +818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326526a4af6521f44a090b59f1f6d7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickUpItems: {fileID: 1382882343}
   objectEquipped: 
   batteryOnStart: 100
   currentBattery: 0
@@ -827,7 +828,6 @@ MonoBehaviour:
   lightForFlash: {fileID: 1053416738}
   percentOfBatteryToBeDecreased: 1
   percentDecreasedPerTick: 0.0001
-  pickUp: {fileID: 1382882343}
 --- !u!54 &896604850
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1937,7 +1937,7 @@ MonoBehaviour:
   holdPos: {fileID: 807657283}
   throwForce: 500
   pickUpRange: 5
-  equipped: 0
+  holdingObj: 0
   fLS: {fileID: 896604849}
 --- !u!1 &1492010787
 GameObject:
@@ -2509,3 +2509,4 @@ SceneRoots:
   - {fileID: 463744744}
   - {fileID: 1566866154}
   - {fileID: 1237024183}
+  - {fileID: 990745019}

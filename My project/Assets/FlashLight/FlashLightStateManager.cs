@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class FlashLightStateManager : MonoBehaviour
 {
+    public PickUpItems pickUpItems;
+    public string objectEquipped;
     public float batteryOnStart = 100f;
     public float currentBattery;
 
@@ -17,7 +19,7 @@ public class FlashLightStateManager : MonoBehaviour
     public Light lightForFlash;
     public float percentOfBatteryToBeDecreased = 1.0f; 
     public float percentDecreasedPerTick = 0.00001f;
-    public PickUpItems pickUp;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,14 +32,18 @@ public class FlashLightStateManager : MonoBehaviour
     void Update()
     {
         currentBattery -= percentDecreasedPerTick;
-        if(Input.GetKeyDown(KeyCode.F) && disableLight == false && pickUp.equipped == true && pickUp.equipped == true)
+        if(Input.GetKeyDown(KeyCode.F) && objectEquipped =="flashlight")
         {
-            lightToShow.enabled = !lightToShow.enabled;
-            lightForFlash.enabled = !lightForFlash.enabled;
-            if(lightToShow.enabled == true || lightForFlash.enabled == true) 
+            if(disableLight == false && pickUpItems.holdingObj == true)
             {
-                currentBattery--;                
+                lightToShow.enabled = !lightToShow.enabled;
+                lightForFlash.enabled = !lightForFlash.enabled;
+                if(lightToShow.enabled == true || lightForFlash.enabled == true) 
+                {
+                    currentBattery--;                
+                }
             }
+
         }
         if(lightToShow.enabled == true && disableLight == false)
         {

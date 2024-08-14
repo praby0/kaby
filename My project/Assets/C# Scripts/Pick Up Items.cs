@@ -2,35 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using UnityEditor.Callbacks;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class PickUpItems : MonoBehaviour
 {
     public GameObject player;
+    GameObject[] items;
     public Transform holdPos;
-    //if you copy from below this point, you are legally required to like the video
-    public float throwForce = 300f; //force at which the object is thrown at
-    public float pickUpRange = 5f; //how far the player can pickup the object from
+
+    public float throwForce; //force at which the object is thrown at
+    public float pickUpRange = 4f; //how far the player can pickup the object from
     private GameObject heldObj; //object which we pick up
-    public bool equipped = false;
+
     private Rigidbody heldObjRb; //rigidbody of object we pick up
+    public bool holdingObj = false;
     private bool canDrop = true; //this is needed so we don't throw/drop object when rotating the object
-    private int LayerNumber; //layer index
-
     public FlashLightStateManager fLS;
-    //Reference to script which includes mouse movement of player (looking around)
-    //we want to disable the player looking around when rotating the object
-    //example below 
-    //MouseLookScript mouseLookScript;
-    void Start()
-    {
-        LayerNumber = LayerMask.NameToLayer("holdLayer"); //if your holdLayer is named differently make sure to change this ""
-
-        //mouseLookScript = player.GetComponent<MouseLookScript>();
-    }
     void Update()
     {
+        items = GameObject.FindGameObjectsWithTag("items");//finds all items with tag items
         if (Input.GetKeyDown(KeyCode.E)) //change E to whichever key you want to press to pick up
         {
             if (heldObj == null) //if currently not holding anything
@@ -45,7 +37,7 @@ public class PickUpItems : MonoBehaviour
                         //pass in object hit into the PickUpObject function
                         PickUpObject(hit.transform.gameObject);
                         fLS.objectEquipped = hit.transform.gameObject.name;
-                        equipped = true;
+                        holdingObj = true;
                     }
                 }
             }
@@ -53,9 +45,8 @@ public class PickUpItems : MonoBehaviour
             {
                 if(canDrop == true)
                 {
-                    StopClipping(); //prevents object from clipping through walls *This shi dont work for some reason*
                     DropObject();
-                    equipped = false;
+                    holdingObj = false;
                 }
             }
         }
@@ -64,9 +55,8 @@ public class PickUpItems : MonoBehaviour
             MoveObject(); //keep object position at holdPos
             if (Input.GetKeyDown(KeyCode.Q) && canDrop == true) //q is used to throw, change this if you want another button to be used)
             {
-                StopClipping();
                 ThrowObject();
-                equipped = false;
+                holdingObj = false;
             }
 
         }
@@ -77,10 +67,13 @@ public class PickUpItems : MonoBehaviour
         {
             heldObj = pickUpObj; //assign heldObj to the object that was hit by the raycast (no longer == null)
             heldObjRb = pickUpObj.GetComponent<Rigidbody>(); //assign Rigidbody
+            heldObjRb.useGravity = false;
             heldObjRb.isKinematic = true;
             heldObjRb.transform.parent = holdPos.transform; //parent object to holdposition
-            heldObj.layer = LayerNumber; //change the object layer to the holdLayer
-            //make sure object doesnt collide with player, it can cause weird bugs
+            foreach(GameObject g in items)// goes through all items and makes sure the item equipped cant mess with them otherwise it tweaks
+            {
+                Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), g.GetComponent<Collider>(), true);
+            }
             Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
         }
     }
@@ -88,8 +81,12 @@ public class PickUpItems : MonoBehaviour
     {
         //re-enable collision with player
         Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
-        heldObj.layer = 0; //object assigned back to default layer
+        foreach(GameObject g in items) // this cancels the effect on top
+        {
+            Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), g.GetComponent<Collider>(), false);
+        }
         heldObjRb.isKinematic = false;
+        heldObjRb.useGravity = true;
         heldObj.transform.parent = null; //unparent object
         heldObj = null; //undefine game object
     }
@@ -97,34 +94,19 @@ public class PickUpItems : MonoBehaviour
     {
         heldObj.transform.position = holdPos.transform.position;
         heldObj.transform.rotation = holdPos.rotation;
-
     }
     void ThrowObject()
     {
         //same as drop function, but add force to object before undefining it
         Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
-        heldObj.layer = 0;
+        foreach(GameObject g in items)
+        {
+            Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), g.GetComponent<Collider>(), false);
+        }
         heldObjRb.isKinematic = false;
+        heldObjRb.useGravity = true;
         heldObj.transform.parent = null;
-        heldObjRb.AddForce(transform.forward * throwForce);
-        heldObjRb.AddForce(transform.forward , ForceMode.Acceleration);
+        heldObjRb.AddForce(transform.forward / (heldObjRb.mass) * throwForce);
         heldObj = null;
     }
-    void StopClipping() //function only called when dropping/throwing
-    {
-        var clipRange = Vector3.Distance(heldObj.transform.position, transform.position); //distance from holdPos to the camera
-        //have to use RaycastAll as object blocks raycast in center screen
-        //RaycastAll returns array of all colliders hit within the cliprange
-        RaycastHit[] hits;
-        hits = Physics.RaycastAll(transform.position, transform.TransformDirection(Vector3.forward), clipRange);
-        //if the array length is greater than 1, meaning it has hit more than just the object we are carrying
-        if (hits.Length > 1)
-        {
-            //change object position to camera position 
-            heldObj.transform.position = transform.position + new Vector3(0f, -0.1f, 0f); //offset slightly downward to stop object dropping above player 
-            //if your player is small, change the -0.5f to a smaller number (in magnitude) ie: -0.1f
-        }
-    }
-
-
 }

@@ -11,6 +11,7 @@ public class FlashLightStateManager : MonoBehaviour
     public string objectEquipped;
     public float batteryOnStart = 100f;
     public float currentBattery;
+    public float flashlightHealth = 100f;
 
     public float startAmountToMax = 0.0f;
     public float maxAmoutToBeReached = 4.0f;
@@ -19,10 +20,12 @@ public class FlashLightStateManager : MonoBehaviour
     public Light lightForFlash;
     public float percentOfBatteryToBeDecreased = 1.0f; 
     public float percentDecreasedPerTick = 0.00001f;
-
+    public GameObject flashlightBatteryManagerGUI;
+    private int onlyOnTheFirstTime = 0;
     // Start is called before the first frame update
     void Start()
     {
+        flashlightBatteryManagerGUI.SetActive(false);
         currentBattery = batteryOnStart;
         lightToShow.enabled = false;
         lightForFlash.enabled = false;
@@ -32,10 +35,15 @@ public class FlashLightStateManager : MonoBehaviour
     void Update()
     {
         currentBattery -= percentDecreasedPerTick;
-        if(Input.GetKeyDown(KeyCode.F) && objectEquipped =="flashlight")
+        if(Input.GetKeyDown(KeyCode.F) && objectEquipped == "flashlight")
         {
             if(disableLight == false && pickUpItems.holdingObj == true)
             {
+                onlyOnTheFirstTime++;
+                if(onlyOnTheFirstTime == 1)
+                {
+                    flashlightBatteryManagerGUI.SetActive(true);
+                }
                 lightToShow.enabled = !lightToShow.enabled;
                 lightForFlash.enabled = !lightForFlash.enabled;
                 if(lightToShow.enabled == true || lightForFlash.enabled == true) 
@@ -43,8 +51,12 @@ public class FlashLightStateManager : MonoBehaviour
                     currentBattery--;                
                 }
             }
-
         }
+        if(onlyOnTheFirstTime > 1 && objectEquipped == "flashlight")
+        {
+            flashlightBatteryManagerGUI.SetActive(true);
+        }
+
         if(lightToShow.enabled == true && disableLight == false)
         {
             startAmountToMax += Time.deltaTime;
@@ -87,4 +99,19 @@ public class FlashLightStateManager : MonoBehaviour
 
     }
 
+    public void addBattery(bool batteryGiven,int batteryNumber, float batteryPercentAmount, float batteryEffectivness)
+    {
+        if(batteryGiven == true)
+        {
+            if (batteryEffectivness > 90)
+            {
+                currentBattery = (batteryNumber * batteryPercentAmount) * (batteryEffectivness) + 10;
+            }
+            else
+            {
+                currentBattery = (batteryNumber * batteryPercentAmount) * (batteryEffectivness);
+            }
+        }
+        disableLight = false;
+    }
 }

@@ -479,7 +479,7 @@ GameObject:
   - component: {fileID: 467933625}
   m_Layer: 0
   m_Name: Guard#1
-  m_TagString: Untagged
+  m_TagString: items
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1026,11 +1026,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 935074584}
+  - {fileID: 1600014365}
   m_Father: {fileID: 1147884873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -840, y: -474}
+  m_AnchoredPosition: {x: -840, y: -302.7}
   m_SizeDelta: {x: 195, y: 33.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &610004252
@@ -1549,6 +1550,7 @@ MonoBehaviour:
   lightForFlash: {fileID: 1053416738}
   percentOfBatteryToBeDecreased: 1
   percentDecreasedPerTick: 0.0001
+  flashlightBatteryManagerGUI: {fileID: 610004250}
 --- !u!54 &896604850
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2048,8 +2050,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: jumpKey
+      value: 102
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: zoomKey
       value: 122
+      objectReference: {fileID: 0}
+    - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: enableJump
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: sprintSpeed
@@ -2057,7 +2067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: crouchHeight
-      value: 0.95
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: sprintCooldown
@@ -2402,7 +2412,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 610004251}
-  - {fileID: 1600014365}
   m_Father: {fileID: 1270300439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2872,6 +2881,7 @@ MonoBehaviour:
   throwForce: 500
   pickUpRange: 5
   holdingObj: 0
+  Drop: 0
   fLS: {fileID: 896604849}
 --- !u!1 &1492010787
 GameObject:
@@ -3141,16 +3151,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1600014364}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 0.0000000013969835, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000023152897}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1147884873}
+  m_Father: {fileID: 610004251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -934.74286, y: -475.63977}
+  m_AnchoredPosition: {x: -94.7428, y: 2.900055}
   m_SizeDelta: {x: 43.3333, y: 43.3333}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1600014366

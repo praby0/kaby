@@ -8,12 +8,13 @@ public class LightBarController : MonoBehaviour
     public FlashLightStateManager baterie;
 
     public Slider slide;
-    
 
     private void Update()
     {
-
-        Set_Slider(baterie.currentBattery);
+        if(baterie.objectEquipped == "flashlight")
+        {
+            Set_Slider(baterie.currentBattery);
+        }
 
     }
 

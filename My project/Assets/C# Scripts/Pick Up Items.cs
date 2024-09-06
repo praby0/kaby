@@ -10,7 +10,7 @@ public class PickUpItems : MonoBehaviour
 {
     public GameObject player;
     GameObject[] items;
-    public Transform holdPos;
+    public Transform holdPos; 
 
     public float throwForce; //force at which the object is thrown at
     public float pickUpRange = 4f; //how far the player can pickup the object from
@@ -19,6 +19,7 @@ public class PickUpItems : MonoBehaviour
     private Rigidbody heldObjRb; //rigidbody of object we pick up
     public bool holdingObj = false;
     private bool canDrop = true; //this is needed so we don't throw/drop object when rotating the object
+    public bool Drop = false;
     public FlashLightStateManager fLS;
     void Update()
     {
@@ -79,6 +80,8 @@ public class PickUpItems : MonoBehaviour
     }
     void DropObject()
     {
+        fLS.objectEquipped = "";
+        fLS.flashlightBatteryManagerGUI.SetActive(false);
         //re-enable collision with player
         Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
         foreach(GameObject g in items) // this cancels the effect on top
@@ -97,6 +100,8 @@ public class PickUpItems : MonoBehaviour
     }
     void ThrowObject()
     {
+        fLS.objectEquipped = "";
+        fLS.flashlightBatteryManagerGUI.SetActive(false);
         //same as drop function, but add force to object before undefining it
         Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
         foreach(GameObject g in items)

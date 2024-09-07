@@ -11,12 +11,13 @@ public class PickUpItems : MonoBehaviour
     public GameObject player;
     GameObject[] items;
     public Transform holdPos; 
+    public addingBattery addingBattery;
 
     public float throwForce; //force at which the object is thrown at
     public float pickUpRange = 4f; //how far the player can pickup the object from
-    private GameObject heldObj; //object which we pick up
+    public GameObject heldObj; //object which we pick up
 
-    private Rigidbody heldObjRb; //rigidbody of object we pick up
+    public Rigidbody heldObjRb; //rigidbody of object we pick up
     public bool holdingObj = false;
     private bool canDrop = true; //this is needed so we don't throw/drop object when rotating the object
     public bool Drop = false;
@@ -39,6 +40,7 @@ public class PickUpItems : MonoBehaviour
                         PickUpObject(hit.transform.gameObject);
                         fLS.objectEquipped = hit.transform.gameObject.name;
                         holdingObj = true;
+
                     }
                 }
             }
@@ -78,8 +80,9 @@ public class PickUpItems : MonoBehaviour
             Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
         }
     }
-    void DropObject()
+    public void DropObject()
     {
+        addingBattery.batteryEquipped = false;
         fLS.objectEquipped = "";
         fLS.flashlightBatteryManagerGUI.SetActive(false);
         //re-enable collision with player
@@ -100,6 +103,7 @@ public class PickUpItems : MonoBehaviour
     }
     void ThrowObject()
     {
+        addingBattery.batteryEquipped = false;
         fLS.objectEquipped = "";
         fLS.flashlightBatteryManagerGUI.SetActive(false);
         //same as drop function, but add force to object before undefining it

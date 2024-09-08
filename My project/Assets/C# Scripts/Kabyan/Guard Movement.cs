@@ -13,13 +13,15 @@ public class GuardMovements : MonoBehaviour
     public float y_Value;
     public float speed;
     public Vector3 fin_location;
+    public characterPositionWhenInPianoRange characterPositionWhenInPianoRange;
 
     private bool loc_reached = true;
+    public bool player_revealed = false;
 
 
     private void Update()
     {
-        if(!player_info.canSeePlayer)
+        if(!player_info.canSeePlayer && !player_last_location_reavealed())
         {
             Patrol(); //let him be if not
             If_Reached();
@@ -27,6 +29,11 @@ public class GuardMovements : MonoBehaviour
         else if(player_info.canSeePlayer)
         {
             Chase();
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position,goToPlayerLocation(player_last_location_reavealed()),speed*Time.deltaTime);
+            transform.LookAt(goToPlayerLocation(player_last_location_reavealed()));
         }
         while(loc_reached)
         {
@@ -68,5 +75,24 @@ public class GuardMovements : MonoBehaviour
 
     }
 
+    private bool player_last_location_reavealed()
+    {
+        if(!player_revealed)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private Vector3 goToPlayerLocation(bool found)
+    {
+        float ran_X = Random.Range(min_X, max_X);
+        float ran_Z = Random.Range(min_Z, max_Z);
+        if(found)
+        {
+            return characterPositionWhenInPianoRange.playerPosition(); 
+        }
+        return new Vector3(ran_X,y_Value,ran_Z);
+    }
 
 }

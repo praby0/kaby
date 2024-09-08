@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ public class PianoAudio : MonoBehaviour
     PianoDetect pianoDetect;
    
     public AudioSource audioSource;
+
+    public GuardMovements guardMovements;
+    
 
     float volume;
 
@@ -41,6 +45,7 @@ public class PianoAudio : MonoBehaviour
             Debug.Log("Guard called");
             audioSource.volume = 1.0f;
             audioSource.Play();
+            guardMovements.player_revealed = true;
             return;
         }
         else if (play)
@@ -55,4 +60,5 @@ public class PianoAudio : MonoBehaviour
             audioSource.Stop();
         }
     }
+
 }

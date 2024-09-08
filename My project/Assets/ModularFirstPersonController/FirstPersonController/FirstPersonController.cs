@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem.Interactions;
+
 
 
 #if UNITY_EDITOR
@@ -23,7 +25,6 @@ public class FirstPersonController : MonoBehaviour
     #region Camera Movement Variables
 
     public Camera playerCamera;
-    public PickUpItems pickUpItems;
 
     public float fov = 60f;
     public bool invertCamera = false;
@@ -100,7 +101,6 @@ public class FirstPersonController : MonoBehaviour
     public bool enableJump = true;
     public KeyCode jumpKey = KeyCode.Space;
     public float jumpPower = 5f;
-    private float playerWeight;
 
     // Internal Variables
     private bool isGrounded = false;
@@ -138,8 +138,6 @@ public class FirstPersonController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        playerWeight = rb.mass;
-
         crosshairObject = GetComponentInChildren<Image>();
 
         // Set internal variables
@@ -156,7 +154,6 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
-        pickUpItems = GetComponentInChildren<PickUpItems>();
         if(lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -208,9 +205,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Update()
     {
-        playerWeight += pickUpItems.heldObjRb.mass;
-        #region Camera
-        print("player weight(with item): "+ playerWeight + " item(equipped): "+ pickUpItems.heldObj);
+
         // Control camera movement
         if(cameraCanMove)
         {
@@ -276,8 +271,7 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
-        #endregion
-        #endregion
+        #endregion        
 
         #region Sprint
 
@@ -566,7 +560,7 @@ public class FirstPersonController : MonoBehaviour
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.Label("Camera Setup", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
         EditorGUILayout.Space();
-
+        
         fpc.playerCamera = (Camera)EditorGUILayout.ObjectField(new GUIContent("Camera", "Camera attached to the controller."), fpc.playerCamera, typeof(Camera), true);
         fpc.fov = EditorGUILayout.Slider(new GUIContent("Field of View", "The camera’s view angle. Changes the player camera directly."), fpc.fov, fpc.zoomFOV, 179f);
         fpc.cameraCanMove = EditorGUILayout.ToggleLeft(new GUIContent("Enable Camera Rotation", "Determines if the camera is allowed to move."), fpc.cameraCanMove);

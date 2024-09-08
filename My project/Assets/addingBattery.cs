@@ -11,6 +11,8 @@ public class addingBattery : MonoBehaviour
     float batteryPercentAmount;
     float batteryEffectivness;
 
+    
+
     private int maxBatteryPacksOnMap;
 
     // Start is called before the first frame update
@@ -28,7 +30,6 @@ public class addingBattery : MonoBehaviour
             batteryNumber = Random.Range(2,4);
             batteryPercentAmount = Random.Range(25f,91f);
             batteryEffectivness = Random.Range(0.044f,0.094f);
-            Debug.Log("Number of batteries: "+batteryNumber+" Battery Percentage: "+batteryPercentAmount+" battery Effectivness: "+batteryEffectivness);
             pickUpItems.DropObject();
             batteryEquipped = true;
             flashLightStateManager.addBattery(batteryEquipped,batteryNumber,batteryPercentAmount,batteryEffectivness);

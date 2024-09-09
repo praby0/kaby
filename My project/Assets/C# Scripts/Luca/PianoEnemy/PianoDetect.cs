@@ -39,12 +39,12 @@ public class PianoDetect : MonoBehaviour
 
         if(objAudio.Length != 0)
         {
-            Debug.Log("Player in range");
+            //Debug.Log("Player in range");
             return true;
         }
         else
         {
-            Debug.Log("Player not in range");
+            //Debug.Log("Player not in range");
             return false;
         }
     }
@@ -53,12 +53,12 @@ public class PianoDetect : MonoBehaviour
     {
         if(aggro)
         {
-            Debug.Log("Aggro noise activated");
+            //Debug.Log("Aggro noise activated");
             return true;
         }
         else
         {
-            Debug.Log("Aggro noise deactivated");
+            //Debug.Log("Aggro noise deactivated");
             return false;
         }
     }

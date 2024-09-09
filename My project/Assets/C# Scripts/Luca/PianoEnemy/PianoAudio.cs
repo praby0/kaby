@@ -18,7 +18,7 @@ public class PianoAudio : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Audio script activated");
+        //Debug.Log("Audio script activated");
         audioSource = GetComponent<AudioSource>();
         pianoDetect = GetComponent<PianoDetect>();
         StartCoroutine(audioCue());
@@ -50,13 +50,13 @@ public class PianoAudio : MonoBehaviour
         }
         else if (play)
         {
-            Debug.Log("Playing audio...");
+            //Debug.Log("Playing audio...");
             audioSource.volume = 0.2f;
             audioSource.Play();
         }
         else
         {
-            Debug.Log("Stopping audio...");
+            //Debug.Log("Stopping audio...");
             audioSource.Stop();
         }
     }

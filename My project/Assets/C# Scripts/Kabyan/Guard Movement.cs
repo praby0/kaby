@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class GuardMovements : MonoBehaviour
 {
@@ -13,12 +14,18 @@ public class GuardMovements : MonoBehaviour
     public float y_Value;
     public float speed;
     public Vector3 fin_location;
+    public characterPositionWhenInPianoRange characterPositionWhenInPianoRange;
 
     private bool loc_reached = true;
+    public bool player_revealed = false;
 
 
     private void Update()
     {
+        if(player_revealed)
+        {
+            GoToPlayerAtLastLocation();
+        }
         if(!player_info.canSeePlayer)
         {
             Patrol(); //let him be if not
@@ -68,5 +75,12 @@ public class GuardMovements : MonoBehaviour
 
     }
 
+    private void GoToPlayerAtLastLocation()
+    {
+        fin_location = characterPositionWhenInPianoRange.playerPosition();
+        transform.position = Vector3.MoveTowards(transform.position, fin_location, speed * Time.deltaTime);
+        transform.LookAt(fin_location);
+        If_Reached();
+    }
 
 }

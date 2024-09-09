@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -10,11 +11,14 @@ public class PianoAudio : MonoBehaviour
    
     public AudioSource audioSource;
 
+    public GuardMovements guardMovements;
+    
+
     float volume;
 
     void Start()
     {
-        Debug.Log("Audio script activated");
+        //Debug.Log("Audio script activated");
         audioSource = GetComponent<AudioSource>();
         pianoDetect = GetComponent<PianoDetect>();
         StartCoroutine(audioCue());
@@ -41,18 +45,20 @@ public class PianoAudio : MonoBehaviour
             Debug.Log("Guard called");
             audioSource.volume = 1.0f;
             audioSource.Play();
+            guardMovements.player_revealed = true;
             return;
         }
         else if (play)
         {
-            Debug.Log("Playing audio...");
+            //Debug.Log("Playing audio...");
             audioSource.volume = 0.2f;
             audioSource.Play();
         }
         else
         {
-            Debug.Log("Stopping audio...");
+            //Debug.Log("Stopping audio...");
             audioSource.Stop();
         }
     }
+
 }

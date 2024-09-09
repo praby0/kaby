@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -8,6 +9,11 @@ using UnityEngine;
 public class FlashLightStateManager : MonoBehaviour
 {
     public PickUpItems pickUpItems;
+    public GameObject flashlightBatteryManagerGUI;
+    public Light lightToShow;
+    public Light lightForFlash;
+    public addingBattery addingBattery;
+
     public string objectEquipped;
     public float batteryOnStart = 100f;
     public float currentBattery;
@@ -16,12 +22,10 @@ public class FlashLightStateManager : MonoBehaviour
     public float startAmountToMax = 0.0f;
     public float maxAmoutToBeReached = 4.0f;
     bool disableLight = false;
-    public Light lightToShow;
-    public Light lightForFlash;
     public float percentOfBatteryToBeDecreased = 1.0f; 
     public float percentDecreasedPerTick = 0.00001f;
-    public GameObject flashlightBatteryManagerGUI;
     private int onlyOnTheFirstTime = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +70,10 @@ public class FlashLightStateManager : MonoBehaviour
                 startAmountToMax = 0.0f;
             }
         }
+        if(currentBattery > 99)
+        {
+            currentBattery = 100;
+        }
 
     }
 
@@ -100,17 +108,11 @@ public class FlashLightStateManager : MonoBehaviour
     }
 
     public void addBattery(bool batteryGiven,int batteryNumber, float batteryPercentAmount, float batteryEffectivness)
-    {
+    {   
         if(batteryGiven == true)
         {
-            if (batteryEffectivness > 90)
-            {
-                currentBattery = (batteryNumber * batteryPercentAmount) * (batteryEffectivness) + 10;
-            }
-            else
-            {
-                currentBattery = (batteryNumber * batteryPercentAmount) * (batteryEffectivness);
-            }
+            currentBattery +=(int) ((batteryNumber * batteryPercentAmount) * (batteryEffectivness));
+            print("Battery Given: " +(int) ((batteryNumber * batteryPercentAmount) * (batteryEffectivness)));
         }
         disableLight = false;
     }

@@ -15,6 +15,7 @@ public class GuardMovements : MonoBehaviour
     public float speed;
     public Vector3 fin_location;
     public characterPositionWhenInPianoRange characterPositionWhenInPianoRange;
+    public FirstPersonController firstPersonController;
 
     private bool loc_reached = true;
     public bool player_revealed = false;
@@ -29,6 +30,7 @@ public class GuardMovements : MonoBehaviour
         if(!player_info.canSeePlayer)
         {
             Patrol(); //let him be if not
+            ChaseXYZToNearPlayer();
             If_Reached();
         }
         else if(player_info.canSeePlayer)
@@ -81,6 +83,15 @@ public class GuardMovements : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, fin_location, speed * Time.deltaTime);
         transform.LookAt(fin_location);
         If_Reached();
+    }
+
+    private void ChaseXYZToNearPlayer()
+    {
+        min_X = characterPositionWhenInPianoRange.playerPos.x;
+        min_Z = characterPositionWhenInPianoRange.playerPos.x;
+        max_X = characterPositionWhenInPianoRange.playerPos.x + 40;
+        max_Z = characterPositionWhenInPianoRange.playerPos.z + 40;
+        //print("min x: "+min_X + " min z: " + min_Z + " max x: " + max_X +" max z: "+ max_Z);
     }
 
 }

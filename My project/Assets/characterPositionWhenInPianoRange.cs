@@ -6,6 +6,19 @@ public class characterPositionWhenInPianoRange : MonoBehaviour
 {
     public GameObject player;
     public GuardMovements guardMovements;
+    private float playerWaitSeconds;
+    private float maxPlayerWaitSeconds = 2.0f;
+    public Vector3 playerPos;
+    public void Update()
+    {
+        playerWaitSeconds += Time.deltaTime;
+        print((int)playerWaitSeconds);
+        if (playerWaitSeconds > maxPlayerWaitSeconds)
+        {
+            playerPos = player.transform.position;
+            playerWaitSeconds = 0.0f;
+        }
+    }
     public Vector3 playerPosition()
     {
         if(guardMovements.player_revealed == true)

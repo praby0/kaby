@@ -37,7 +37,7 @@ public class GuardMovements : MonoBehaviour
         {
             Chase();
         }
-        while(loc_reached)
+        while (loc_reached && characterPositionWhenInPianoRange.playerWait == true)
         {
             Random_Number();
         }
@@ -87,10 +87,10 @@ public class GuardMovements : MonoBehaviour
 
     private void ChaseXYZToNearPlayer()
     {
-        min_X = characterPositionWhenInPianoRange.playerPos.x;
-        min_Z = characterPositionWhenInPianoRange.playerPos.x;
-        max_X = characterPositionWhenInPianoRange.playerPos.x + 40;
-        max_Z = characterPositionWhenInPianoRange.playerPos.z + 40;
+        min_X = characterPositionWhenInPianoRange.playerPos.x - 5;
+        min_Z = characterPositionWhenInPianoRange.playerPos.x - 5;
+        max_X = characterPositionWhenInPianoRange.playerPos.x + 10;
+        max_Z = characterPositionWhenInPianoRange.playerPos.z + 10;
         //print("min x: "+min_X + " min z: " + min_Z + " max x: " + max_X +" max z: "+ max_Z);
     }
 

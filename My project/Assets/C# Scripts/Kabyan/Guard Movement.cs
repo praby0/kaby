@@ -31,10 +31,7 @@ public class GuardMovements : MonoBehaviour
     private void Update()
     {
         gameObject.transform.position = new Vector3(navMeshAgent.transform.position.x,1,navMeshAgent.transform.position.z);
-        if(gameObject.transform.position == fin_location || transform.position.x-fin_location.x >= -3.5 && transform.position.x-fin_location.x <= 0 ||transform.position.x-fin_location.x <= 4.5 && transform.position.x-fin_location.x >= 0)
-        {
-            loc_reached = true;
-        }
+
         if(player_revealed)
         {
             GoToPlayerAtLastLocation();
@@ -43,12 +40,15 @@ public class GuardMovements : MonoBehaviour
                 loc_reached = true;
             }
         }
-        if(!player_info.canSeePlayer)
+        else if (gameObject.transform.position == fin_location || transform.position.x - fin_location.x >= -2.5 && transform.position.x - fin_location.x <= 0 || transform.position.x - fin_location.x <= 2.5 && transform.position.x - fin_location.x >= 0)
+        {
+            loc_reached = true;
+        }
+        if (!player_info.canSeePlayer)
         {
             ChaseXYZToNearPlayer();
             navMeshAgent.destination = fin_location;
             If_Reached();
-            
         }
         else if(player_info.canSeePlayer)
         {

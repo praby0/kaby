@@ -109,19 +109,19 @@ NavMeshSettings:
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.4
-    ledgeDropHeight: 0
-    maxJumpAcrossDistance: 0
+    ledgeDropHeight: 2
+    maxJumpAcrossDistance: 2
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    buildHeightMesh: 0
+    buildHeightMesh: 1
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: f0aa2e8ddccb54b40ae549c9d853e9b1, type: 2}
 --- !u!1 &20091699
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,8 +409,8 @@ GameObject:
   m_Name: Battery
   m_TagString: items
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 2
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!54 &182945830
 Rigidbody:
@@ -739,7 +739,7 @@ Transform:
   m_GameObject: {fileID: 467933617}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -34.58, y: 1, z: 8.26}
+  m_LocalPosition: {x: -9.97, y: 1, z: 15.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -763,10 +763,11 @@ MonoBehaviour:
   min_Z: 13.57
   max_Z: 36.07
   y_Value: 1
-  speed: 3
+  speed: 0
   fin_location: {x: 0, y: 0, z: 0}
   characterPositionWhenInPianoRange: {fileID: 1502363296}
   firstPersonController: {fileID: 1502363290}
+  loc_reached: 1
   player_revealed: 0
 --- !u!195 &467933624
 NavMeshAgent:
@@ -775,7 +776,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467933617}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -784,7 +785,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 0
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1
@@ -1893,8 +1894,8 @@ GameObject:
   m_Name: Piano#1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 2
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!65 &990745016
 BoxCollider:
@@ -2722,8 +2723,8 @@ GameObject:
   m_Name: LODALDAODAD
   m_TagString: items
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!65 &1237024180
 BoxCollider:
@@ -3049,8 +3050,8 @@ GameObject:
   m_Name: Wall#1
   m_TagString: items
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!65 &1492010788
 BoxCollider:

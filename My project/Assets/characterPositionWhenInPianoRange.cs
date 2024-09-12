@@ -7,7 +7,7 @@ public class characterPositionWhenInPianoRange : MonoBehaviour
     public GameObject player;
     public GuardMovements guardMovements;
     private float playerWaitSeconds;
-    private float maxPlayerWaitSeconds = 0.5f;
+    private float maxPlayerWaitSeconds = 1f;
     public bool playerWait = false;
     public Vector3 playerPos;
     public void Update()

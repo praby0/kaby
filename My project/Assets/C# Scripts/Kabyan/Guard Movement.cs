@@ -103,7 +103,7 @@ public class GuardMovements : MonoBehaviour
     private void ChaseXYZToNearPlayer()
     {
         min_X = characterPositionWhenInPianoRange.playerPos.x;
-        min_Z = characterPositionWhenInPianoRange.playerPos.z;
+        min_Z = characterPositionWhenInPianoRange.playerPos.z - 20;
         //print("min x: "+min_X + " min z: " + min_Z + " max x: " + max_X +" max z: "+ max_Z);
     }
 

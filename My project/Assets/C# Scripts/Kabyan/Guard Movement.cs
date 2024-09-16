@@ -23,13 +23,23 @@ public class GuardMovements : MonoBehaviour
     private float ran_X;
     private float ran_Z;
     private NavMeshAgent navMeshAgent;
+    [SerializeField] private GameObject[] gos;
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         Random_Number();
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("Untagged");
     }
     private void Update()
     {
+        foreach(GameObject g in gos)
+        {
+            if(g.transform.position == navMeshAgent.destination)
+            {
+                loc_reached = true;
+            }
+        }
         gameObject.transform.position = new Vector3(navMeshAgent.transform.position.x,1,navMeshAgent.transform.position.z);
 
         if(player_revealed)

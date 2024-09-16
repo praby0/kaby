@@ -109,8 +109,8 @@ NavMeshSettings:
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.4
-    ledgeDropHeight: 2
-    maxJumpAcrossDistance: 2
+    ledgeDropHeight: 10
+    maxJumpAcrossDistance: 10
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
@@ -623,9 +623,9 @@ GameObject:
   - component: {fileID: 467933622}
   - component: {fileID: 467933621}
   - component: {fileID: 467933620}
+  - component: {fileID: 467933623}
   - component: {fileID: 467933619}
   - component: {fileID: 467933618}
-  - component: {fileID: 467933623}
   - component: {fileID: 467933624}
   - component: {fileID: 467933625}
   m_Layer: 0
@@ -648,7 +648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 10
-  angle: 100
+  angle: 80
   playerRef: {fileID: 1502363289}
   targetMask:
     serializedVersion: 2
@@ -769,6 +769,7 @@ MonoBehaviour:
   firstPersonController: {fileID: 1502363290}
   loc_reached: 1
   player_revealed: 0
+  gos: []
 --- !u!195 &467933624
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -785,7 +786,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 0
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1
@@ -3045,10 +3046,9 @@ GameObject:
   - component: {fileID: 1492010790}
   - component: {fileID: 1492010789}
   - component: {fileID: 1492010788}
-  - component: {fileID: 1492010792}
   m_Layer: 7
   m_Name: Wall#1
-  m_TagString: items
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
@@ -3139,33 +3139,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 57.493, z: 0}
---- !u!54 &1492010792
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1492010787}
-  serializedVersion: 4
-  m_Mass: 10
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &1502363289 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4459864850019384750, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}

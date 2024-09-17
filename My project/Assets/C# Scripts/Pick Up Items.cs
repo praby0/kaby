@@ -8,7 +8,8 @@ public class PickUpItems : MonoBehaviour
     FirstPersonController firstPersonController;
     GameObject[] items;
     GameObject[] playerMass;
-    public Transform holdPos; 
+    public Transform holdPos;
+    public Transform gunHoldPos;
     public addingBattery addingBattery;
 
     private float PlayerWeight;
@@ -131,8 +132,16 @@ public class PickUpItems : MonoBehaviour
     }
     void MoveObject()
     {
-        heldObj.transform.position = holdPos.transform.position;
-        heldObj.transform.rotation = holdPos.rotation;
+        if(heldObj.gameObject.name == "Pistol_D")
+        {
+            heldObj.transform.position = gunHoldPos.transform.position;
+            heldObj.transform.rotation = gunHoldPos.rotation;
+        }
+        else
+        {
+            heldObj.transform.position = holdPos.transform.position;
+            heldObj.transform.rotation = holdPos.rotation;
+        }
     }
     void ThrowObject()
     {

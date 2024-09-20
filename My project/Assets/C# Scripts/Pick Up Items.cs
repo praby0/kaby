@@ -160,7 +160,7 @@ public class PickUpItems : MonoBehaviour
         holdingGun = false;
         PlayerWeight -= heldObjRb.mass;
         firstPersonController.walkSpeed = 5;
-        firstPersonController.sprintSpeed =7;
+        firstPersonController.sprintSpeed = 7;
         addingBattery.batteryEquipped = false;
         fLS.objectEquipped = "";
         fLS.flashlightBatteryManagerGUI.SetActive(false);

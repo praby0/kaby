@@ -8,6 +8,7 @@ public class handGunAnimationController : MonoBehaviour
     public FirstPersonController firstPersonController;
     public PickUpItems pickUpItems;
     public GameObject gameObject;
+    public Transform gunPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,25 +20,25 @@ public class handGunAnimationController : MonoBehaviour
     {
         if (pickUpItems.holdingGun == true)
         {
-            pickUpItems.holdingObj = true;
+
             if (firstPersonController.isSprinting == true)
             {
-                print("running");
                 anim.SetBool("idle", false);
                 anim.SetBool("isWalking", false);
                 anim.SetBool("isRunning", true);
             }
             else if (firstPersonController.isWalking == true)
             {
-                print("walking");
                 anim.SetBool("idle", false);
                 anim.SetBool("isRunning", false);
                 anim.SetBool("isWalking", true);
             }
             else
-            {
+            { 
                 anim.SetBool("isWalking", false);
                 anim.SetBool("isRunning", false);
+                transform.position = gunPos.transform.position;
+                transform.rotation = gunPos.rotation;
                 anim.SetBool("idle",true);
             }
         }

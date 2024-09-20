@@ -12,6 +12,7 @@ public class PickUpItems : MonoBehaviour
     public Transform gunHoldPos;
     public addingBattery addingBattery;
     public handGunAnimationController handGunAnim;
+    public GameObject realHandGun;
 
     private float PlayerWeight;
 
@@ -78,10 +79,9 @@ public class PickUpItems : MonoBehaviour
     {
         if (pickUpObj.GetComponent<Rigidbody>()) //make sure the object has a RigidBody
         {   
-            if(pickUpObj.name == "Fake_Gun")
+            if(pickUpObj.name == "Pistol_D")
             {
-                handGunAnim.gameObject.SetActive(true);
-                Destroy(pickUpObj);
+                holdingGun = true;
             }
             else
             {
@@ -124,7 +124,6 @@ public class PickUpItems : MonoBehaviour
     }
     public void DropObject()
     {
-        handGunAnim.gameObject.SetActive(false);
         holdingGun = false;
         PlayerWeight -= heldObjRb.mass;
         firstPersonController.walkSpeed = 5;
@@ -158,7 +157,6 @@ public class PickUpItems : MonoBehaviour
     }
     void ThrowObject()
     {
-        handGunAnim.gameObject.SetActive(false);
         holdingGun = false;
         PlayerWeight -= heldObjRb.mass;
         firstPersonController.walkSpeed = 5;

@@ -81,11 +81,10 @@ public class PickUpItems : MonoBehaviour
         {   
             if(pickUpObj.name == "Pistol_D")
             {
+                handGunAnim.anim.enabled = true;
                 holdingGun = true;
             }
-            else
-            {
-                handGunAnim.gameObject.SetActive(false);
+
                 PlayerWeight = pickUpObj.GetComponent<Rigidbody>().mass + PlayerWeight;
                 if (pickUpObj.GetComponent<Rigidbody>().mass > 1 && pickUpObj.GetComponent<Rigidbody>().mass < 6)
                 {
@@ -119,11 +118,12 @@ public class PickUpItems : MonoBehaviour
                     Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), g.GetComponent<Collider>(), true);
                 }
                 Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
-            }
+
         }
     }
     public void DropObject()
     {
+        handGunAnim.anim.enabled = false;
         holdingGun = false;
         PlayerWeight -= heldObjRb.mass;
         firstPersonController.walkSpeed = 5;
@@ -144,19 +144,15 @@ public class PickUpItems : MonoBehaviour
     }
     void MoveObject()
     {
-        if(heldObj.gameObject.name == "Pistol_D")
+        if(heldObj.gameObject.name != "Pistol_D")
         {
-            holdingGun = true;
-        }
-        else
-        {
-            holdingGun = false;
             heldObj.transform.position = holdPos.transform.position;
             heldObj.transform.rotation = holdPos.rotation;
         }
     }
     void ThrowObject()
     {
+        handGunAnim.anim.enabled = false;
         holdingGun = false;
         PlayerWeight -= heldObjRb.mass;
         firstPersonController.walkSpeed = 5;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
-
+using UnityEngine.AI;
 public class GuardMovements : MonoBehaviour
 {
     public POV player_info;
@@ -17,53 +17,79 @@ public class GuardMovements : MonoBehaviour
     public characterPositionWhenInPianoRange characterPositionWhenInPianoRange;
     public FirstPersonController firstPersonController;
 
-    private bool loc_reached = true;
+    public bool loc_reached = true;
     public bool player_revealed = false;
 
-
+    private float ran_X;
+    private float ran_Z;
+    private NavMeshAgent navMeshAgent;
+    [SerializeField] private GameObject[] gos;
+    private void Start()
+    {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        Random_Number();
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("Untagged");
+    }
     private void Update()
     {
+        foreach(GameObject g in gos)
+        {
+            if(g.transform.position == navMeshAgent.destination)
+            {
+                loc_reached = true;
+            }
+        }
+        gameObject.transform.position = new Vector3(navMeshAgent.transform.position.x,1,navMeshAgent.transform.position.z);
+
         if(player_revealed)
         {
             GoToPlayerAtLastLocation();
+            if(navMeshAgent.transform.position == player_info.playerRef.transform.position)
+            {
+                loc_reached = true;
+            }
         }
-        if(!player_info.canSeePlayer)
+        else if (gameObject.transform.position == fin_location || transform.position.x - fin_location.x >= -2.5 && transform.position.x - fin_location.x <= 0 || transform.position.x - fin_location.x <= 2.5 && transform.position.x - fin_location.x >= 0)
         {
-            Patrol(); //let him be if not
+            loc_reached = true;
+        }
+        if (!player_info.canSeePlayer)
+        {
             ChaseXYZToNearPlayer();
+            navMeshAgent.destination = fin_location;
             If_Reached();
         }
         else if(player_info.canSeePlayer)
         {
             Chase();
         }
-        while(loc_reached)
+        while (loc_reached)
         {
             Random_Number();
         }
-
-    }
-
-    //movement when player not spotted
-    private void Patrol()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, fin_location, speed * Time.deltaTime); //move towards the random value with (speed) velocity
-        transform.LookAt(fin_location);
-
+        if(min_X>max_X)
+        {
+            ran_X = Random.Range(min_X, max_X);
+        }
+        else if(min_Z>max_Z)
+        {
+            ran_Z = Random.Range(min_Z, max_Z);
+        }
     }
     //run towards player
     private void Chase()
     {
-        transform.position = Vector3.MoveTowards(transform.position, player_info.playerRef.transform.position, speed * Time.deltaTime);
-        transform.LookAt(player_info.playerRef.transform);
+        navMeshAgent.destination = player_info.playerRef.transform.position;
+        navMeshAgent.transform.LookAt(player_info.playerRef.transform);
     }
     //gets random vector value to move towards
-    private void Random_Number()
+    public void Random_Number()
     {
-
-        float ran_X = Random.Range(min_X, max_X);
-        float ran_Z = Random.Range(min_Z, max_Z);
+        ran_X = Random.Range(min_X, max_X);
+        ran_Z = Random.Range(min_Z, max_Z);
         fin_location = new Vector3(ran_X,y_Value,ran_Z);
+        print("new location: "+fin_location);
         loc_reached = false;
 
     }
@@ -80,17 +106,14 @@ public class GuardMovements : MonoBehaviour
     private void GoToPlayerAtLastLocation()
     {
         fin_location = characterPositionWhenInPianoRange.playerPosition();
-        transform.position = Vector3.MoveTowards(transform.position, fin_location, speed * Time.deltaTime);
-        transform.LookAt(fin_location);
-        If_Reached();
+        navMeshAgent.destination = fin_location;
+        navMeshAgent.transform.LookAt(fin_location);
     }
 
     private void ChaseXYZToNearPlayer()
     {
         min_X = characterPositionWhenInPianoRange.playerPos.x;
-        min_Z = characterPositionWhenInPianoRange.playerPos.x;
-        max_X = characterPositionWhenInPianoRange.playerPos.x + 40;
-        max_Z = characterPositionWhenInPianoRange.playerPos.z + 40;
+        min_Z = characterPositionWhenInPianoRange.playerPos.z - 20;
         //print("min x: "+min_X + " min z: " + min_Z + " max x: " + max_X +" max z: "+ max_Z);
     }
 

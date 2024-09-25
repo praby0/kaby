@@ -1,8 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using UnityEditor.Callbacks;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,8 +8,11 @@ public class PickUpItems : MonoBehaviour
     FirstPersonController firstPersonController;
     GameObject[] items;
     GameObject[] playerMass;
-    public Transform holdPos; 
+    public Transform holdPos;
+    public Transform gunHoldPos;
     public addingBattery addingBattery;
+    public handGunAnimationController handGunAnim;
+    public GameObject realHandGun;
 
     private float PlayerWeight;
 
@@ -25,6 +24,7 @@ public class PickUpItems : MonoBehaviour
     public bool holdingObj = false;
     private bool canDrop = true; //this is needed so we don't throw/drop object when rotating the object
     public bool Drop = false;
+    public bool holdingGun = false;
     public FlashLightStateManager fLS;
     void Start()
     {
@@ -79,43 +79,52 @@ public class PickUpItems : MonoBehaviour
     {
         if (pickUpObj.GetComponent<Rigidbody>()) //make sure the object has a RigidBody
         {   
-            PlayerWeight = pickUpObj.GetComponent<Rigidbody>().mass + PlayerWeight;
-            if(pickUpObj.GetComponent<Rigidbody>().mass > 1 && pickUpObj.GetComponent<Rigidbody>().mass < 6)
+            if(pickUpObj.name == "Pistol_D")
             {
-                firstPersonController.walkSpeed = (firstPersonController.walkSpeed/PlayerWeight)+playerMass[0].GetComponent<Rigidbody>().mass;
-                firstPersonController.sprintSpeed = (firstPersonController.sprintSpeed/PlayerWeight)+playerMass[0].GetComponent<Rigidbody>().mass;
-                print("walk speed(after): "+firstPersonController.walkSpeed);
-                print("run speed(after): "+ firstPersonController.sprintSpeed);
+                handGunAnim.anim.enabled = true;
+                holdingGun = true;
             }
-            else if(pickUpObj.GetComponent<Rigidbody>().mass >= 6)
-            {
-                firstPersonController.walkSpeed = (firstPersonController.walkSpeed/PlayerWeight)+playerMass[0].GetComponent<Rigidbody>().mass-2;
-                firstPersonController.sprintSpeed = (firstPersonController.sprintSpeed/PlayerWeight)+playerMass[0].GetComponent<Rigidbody>().mass-2;
-                print("walk speed(after): "+firstPersonController.walkSpeed);
-                print("run speed(after): "+ firstPersonController.sprintSpeed);
-            }
-            else
-            {
-                firstPersonController.walkSpeed = firstPersonController.walkSpeed/PlayerWeight;
-                firstPersonController.sprintSpeed = firstPersonController.sprintSpeed/PlayerWeight;
-                print("walk speed(after): "+firstPersonController.walkSpeed);
-                print("run speed(after): "+ firstPersonController.sprintSpeed);
-            }
-            print("Objects mass: "+pickUpObj.GetComponent<Rigidbody>().mass + " players mass(with Object): "+PlayerWeight);
-            heldObj = pickUpObj; //assign heldObj to the object that was hit by the raycast (no longer == null)
-            heldObjRb = pickUpObj.GetComponent<Rigidbody>(); //assign Rigidbody
-            heldObjRb.useGravity = false;
-            heldObjRb.isKinematic = true;
-            heldObjRb.transform.parent = holdPos.transform; //parent object to holdposition
-            foreach(GameObject g in items)// goes through all items and makes sure the item equipped cant mess with them otherwise it tweaks
-            {
-                Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), g.GetComponent<Collider>(), true);
-            }
-            Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
+
+                PlayerWeight = pickUpObj.GetComponent<Rigidbody>().mass + PlayerWeight;
+                if (pickUpObj.GetComponent<Rigidbody>().mass > 1 && pickUpObj.GetComponent<Rigidbody>().mass < 6)
+                {
+                    firstPersonController.walkSpeed = (firstPersonController.walkSpeed / PlayerWeight) + playerMass[0].GetComponent<Rigidbody>().mass;
+                    firstPersonController.sprintSpeed = (firstPersonController.sprintSpeed / PlayerWeight) + playerMass[0].GetComponent<Rigidbody>().mass;
+                    print("walk speed(after): " + firstPersonController.walkSpeed);
+                    print("run speed(after): " + firstPersonController.sprintSpeed);
+                }
+                else if (pickUpObj.GetComponent<Rigidbody>().mass >= 6)
+                {
+                    firstPersonController.walkSpeed = (firstPersonController.walkSpeed / PlayerWeight) + playerMass[0].GetComponent<Rigidbody>().mass - 2;
+                    firstPersonController.sprintSpeed = (firstPersonController.sprintSpeed / PlayerWeight) + playerMass[0].GetComponent<Rigidbody>().mass - 2;
+                    print("walk speed(after): " + firstPersonController.walkSpeed);
+                    print("run speed(after): " + firstPersonController.sprintSpeed);
+                }
+                else
+                {
+                    firstPersonController.walkSpeed = firstPersonController.walkSpeed / PlayerWeight;
+                    firstPersonController.sprintSpeed = firstPersonController.sprintSpeed / PlayerWeight;
+                    print("walk speed(after): " + firstPersonController.walkSpeed);
+                    print("run speed(after): " + firstPersonController.sprintSpeed);
+                }
+                print("Objects mass: " + pickUpObj.GetComponent<Rigidbody>().mass + " players mass(with Object): " + PlayerWeight);
+                heldObj = pickUpObj; //assign heldObj to the object that was hit by the raycast (no longer == null)
+                heldObjRb = pickUpObj.GetComponent<Rigidbody>(); //assign Rigidbody
+                heldObjRb.useGravity = false;
+                heldObjRb.isKinematic = true;
+                heldObjRb.transform.parent = holdPos.transform; //parent object to holdposition
+                foreach (GameObject g in items)// goes through all items and makes sure the item equipped cant mess with them otherwise it tweaks
+                {
+                    Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), g.GetComponent<Collider>(), true);
+                }
+                Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
+
         }
     }
     public void DropObject()
     {
+        handGunAnim.anim.enabled = false;
+        holdingGun = false;
         PlayerWeight -= heldObjRb.mass;
         firstPersonController.walkSpeed = 5;
         firstPersonController.sprintSpeed =7;
@@ -135,14 +144,19 @@ public class PickUpItems : MonoBehaviour
     }
     void MoveObject()
     {
-        heldObj.transform.position = holdPos.transform.position;
-        heldObj.transform.rotation = holdPos.rotation;
+        if(heldObj.gameObject.name != "Pistol_D")
+        {
+            heldObj.transform.position = holdPos.transform.position;
+            heldObj.transform.rotation = holdPos.rotation;
+        }
     }
     void ThrowObject()
     {
+        handGunAnim.anim.enabled = false;
+        holdingGun = false;
         PlayerWeight -= heldObjRb.mass;
         firstPersonController.walkSpeed = 5;
-        firstPersonController.sprintSpeed =7;
+        firstPersonController.sprintSpeed = 7;
         addingBattery.batteryEquipped = false;
         fLS.objectEquipped = "";
         fLS.flashlightBatteryManagerGUI.SetActive(false);

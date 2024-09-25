@@ -7,16 +7,19 @@ public class characterPositionWhenInPianoRange : MonoBehaviour
     public GameObject player;
     public GuardMovements guardMovements;
     private float playerWaitSeconds;
-    private float maxPlayerWaitSeconds = 2.0f;
+    private float maxPlayerWaitSeconds = 1f;
+    public bool playerWait = false;
     public Vector3 playerPos;
     public void Update()
     {
         playerWaitSeconds += Time.deltaTime;
-        print((int)playerWaitSeconds);
         if (playerWaitSeconds > maxPlayerWaitSeconds)
         {
+            playerWait = true;
             playerPos = player.transform.position;
             playerWaitSeconds = 0.0f;
+            //print("going closer to player position");
+            playerWait = false;
         }
     }
     public Vector3 playerPosition()

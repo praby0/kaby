@@ -11,7 +11,7 @@ public class PickUpItems : MonoBehaviour
     public Transform holdPos;
     public Transform gunHoldPos;
     public addingBattery addingBattery;
-    public handGunAnimationController handGunAnim;
+    public newAnimatorforGun handGunAnim;
     public GameObject realHandGun;
 
     private float PlayerWeight;
@@ -79,7 +79,7 @@ public class PickUpItems : MonoBehaviour
     {
         if (pickUpObj.GetComponent<Rigidbody>()) //make sure the object has a RigidBody
         {   
-            if(pickUpObj.name == "Pistol_D")
+            if(pickUpObj.name == "GunParent")
             {
                 handGunAnim.anim.enabled = true;
                 holdingGun = true;
@@ -139,12 +139,19 @@ public class PickUpItems : MonoBehaviour
         }
         heldObjRb.isKinematic = false;
         heldObjRb.useGravity = true;
-        heldObj.transform.parent = null; //unparent object
-        heldObj = null; //undefine game object
+        if(heldObj.name == "GunParent")
+        {
+            
+        }
+        else
+        {
+            heldObj.transform.parent = null; //unparent object
+            heldObj = null; //undefine game object
+        }
     }
     void MoveObject()
     {
-        if(heldObj.gameObject.name != "Pistol_D")
+        if(heldObj.gameObject.name != "GunParent")
         {
             heldObj.transform.position = holdPos.transform.position;
             heldObj.transform.rotation = holdPos.rotation;

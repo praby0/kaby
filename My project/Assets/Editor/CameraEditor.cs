@@ -13,7 +13,7 @@ public class CameraEditor : Editor
     {
         CameraClass cam = (CameraClass)target;
         Handles.color = Color.green;
-        Handles.DrawWireDisc(cam.cameralight.transform.position, cam.player.transform.position, cam.radius);
+        Handles.DrawWireArc(cam.cameralight.transform.position, Vector3.up, Vector3.forward, 360, cam.radius);
     }
 
 

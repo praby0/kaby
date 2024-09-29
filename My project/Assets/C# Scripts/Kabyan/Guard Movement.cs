@@ -26,8 +26,9 @@ public class GuardMovements : MonoBehaviour
     private float ran_Z;
     private NavMeshAgent navMeshAgent;
     
-    [SerializeField]
+    [SerializeField] 
     GameObject[] gos;
+    
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();

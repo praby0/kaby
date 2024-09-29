@@ -54,7 +54,7 @@ public class CameraClass : MonoBehaviour
     {
         Collider[] cameracheck = Physics.OverlapSphere(cameralight.transform.position, radius, targetMask);
 
-        if(cameracheck.Length != 1)
+        if(cameracheck.Length != 0)
         {
             return true;
         }

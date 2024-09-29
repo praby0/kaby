@@ -20,10 +20,14 @@ public class GuardMovements : MonoBehaviour
     public bool loc_reached = true;
     public bool player_revealed = false;
 
+    public CameraClass nearbyCamera;
+
     private float ran_X;
     private float ran_Z;
     private NavMeshAgent navMeshAgent;
-    [SerializeField] private GameObject[] gos;
+    
+    [SerializeField]
+    GameObject[] gos;
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -42,6 +46,11 @@ public class GuardMovements : MonoBehaviour
         }
         gameObject.transform.position = new Vector3(navMeshAgent.transform.position.x,1,navMeshAgent.transform.position.z);
 
+        if(nearbyCamera.player_spotted)
+        {
+            player_revealed = true;
+        }
+
         if(player_revealed)
         {
             GoToPlayerAtLastLocation();
@@ -49,6 +58,10 @@ public class GuardMovements : MonoBehaviour
             {
                 loc_reached = true;
             }
+        }
+        else if(!nearbyCamera.player_spotted && nearbyCamera.player_leave)
+        {
+
         }
         else if (gameObject.transform.position == fin_location || transform.position.x - fin_location.x >= -2.5 && transform.position.x - fin_location.x <= 0 || transform.position.x - fin_location.x <= 2.5 && transform.position.x - fin_location.x >= 0)
         {
@@ -117,4 +130,8 @@ public class GuardMovements : MonoBehaviour
         //print("min x: "+min_X + " min z: " + min_Z + " max x: " + max_X +" max z: "+ max_Z);
     }
 
+    void Player_LastLocation()
+    {
+        
+    }
 }

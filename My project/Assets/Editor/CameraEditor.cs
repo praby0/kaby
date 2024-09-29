@@ -7,13 +7,11 @@ using UnityEngine.UIElements;
 
 public class CameraEditor : Editor
 {
-    void Start()
+    void OnSceneGUI() 
     {
         
-    }
+        
 
-    void Update()
-    {
-        
+
     }
 }

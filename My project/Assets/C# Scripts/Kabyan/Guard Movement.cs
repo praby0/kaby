@@ -59,10 +59,12 @@ public class GuardMovements : MonoBehaviour
             ChaseXYZToNearPlayer();
             navMeshAgent.destination = fin_location;
             If_Reached();
+            navMeshAgent.speed = 4;
         }
         else if(player_info.canSeePlayer)
         {
             Chase();
+            navMeshAgent.speed = 5;
         }
         while (loc_reached)
         {

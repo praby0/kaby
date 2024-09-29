@@ -50,7 +50,7 @@ public class CameraClass : MonoBehaviour
     }
 
     //checks if player is inside radius (radius will be shown through editor script)
-    bool CheckOverLap()
+    public bool CheckOverLap()
     {
         Collider[] cameracheck = Physics.OverlapSphere(cameralight.transform.position, radius, targetMask);
 

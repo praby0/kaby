@@ -132,6 +132,6 @@ public class GuardMovements : MonoBehaviour
 
     void Player_LastLocation()
     {
-        
+
     }
 }

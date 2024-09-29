@@ -838,6 +838,7 @@ MonoBehaviour:
   firstPersonController: {fileID: 1502363290}
   loc_reached: 1
   player_revealed: 0
+  nearbyCamera: {fileID: 0}
   gos: []
 --- !u!195 &467933624
 NavMeshAgent:

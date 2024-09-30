@@ -814,7 +814,9 @@ MonoBehaviour:
   playerlayer:
     serializedVersion: 2
     m_Bits: 0
-  agent: {fileID: 0}
+  x: 0
+  y: 0
+  z: 0
 --- !u!195 &1305135436
 NavMeshAgent:
   m_ObjectHideFlags: 0

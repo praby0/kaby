@@ -4,38 +4,38 @@ using UnityEngine;
 using Unity.AI;
 using UnityEditor.Search;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class GuardCode : MonoBehaviour
 {
     
     [SerializeField]
     Vector3 fin_Location;
-    [SerializeField]
-    LayerMask groundlayer, playerlayer;
     NavMeshAgent agent;
     [SerializeField]
     float x,y,z;
-    float speed = 5;
-
+    public POV fov;
 
     void Start()
     {
+        Cursor.visible = false;
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = speed;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(fov.canSeePlayer)
+        {
+            agent.SetDestination(fov.playerRef.transform.position);
+        }
         if(agent.velocity == new Vector3(0,0,0))
         {
             fin_Location = NewDestination();
             agent.SetDestination(fin_Location);
             Stop();
         }
-        Stop();
-
     }
 
     IEnumerator Stop()

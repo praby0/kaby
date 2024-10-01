@@ -15,6 +15,7 @@ public class GuardCode : MonoBehaviour
     [SerializeField]
     float x,y,z;
     public POV fov;
+    public CameraClass nearest_Camera;
 
     void Start()
     {
@@ -30,25 +31,30 @@ public class GuardCode : MonoBehaviour
         {
             agent.SetDestination(fov.playerRef.transform.position);
         }
+        else if(nearest_Camera.player_spotted)
+        {
+            agent.SetDestination(nearest_Camera.player.transform.position);
+        }
+        else if(!nearest_Camera.player_spotted && nearest_Camera.player_leave)
+        {
+            agent.SetDestination(nearest_Camera.Last_locaiton);
+            nearest_Camera.player_leave = false;
+        }
         if(agent.velocity == new Vector3(0,0,0))
         {
             fin_Location = NewDestination();
             agent.SetDestination(fin_Location);
-            Stop();
         }
     }
 
-    IEnumerator Stop()
-    {
-        yield return 1f;
-    }
+
 
     Vector3 NewDestination()
     {
 
-        x = Random.Range(-10,10);
+        x = Random.Range(transform.position.x-10,transform.position.x + 10);
         y = 1;
-        z = Random.Range(-10,10);
+        z = Random.Range(transform.position.z-10,transform.position.z + 10);
 
         return new Vector3(x,y,z);
 

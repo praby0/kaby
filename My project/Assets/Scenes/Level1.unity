@@ -3768,8 +3768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85be3a193df4c548a8ff7fd9b5df7af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0
-  angle: 0
+  radius: 6
+  angle: 100
   playerRef: {fileID: 0}
   targetMask:
     serializedVersion: 2
